@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
-
+# from django.conf.urls import patterns, url
+from django.urls import path, include
+from sell import views as sell_views
 __author__ = 'JiaPan'
 
-urlpatterns = patterns('',
-                       url(r'^$', 'sell.views.index'),
-)
+urlpatterns = [
+
+    path('', sell_views.index),
+
+]

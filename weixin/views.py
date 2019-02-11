@@ -2,15 +2,16 @@
 from django.db.models import Q
 
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import render, render_to_response
 from django.utils.encoding import smart_str
 from wechat_sdk import WechatBasic
 from wechat_sdk.messages import (
     TextMessage, VoiceMessage, ImageMessage, VideoMessage, LinkMessage, LocationMessage, EventMessage
 )
-from models import Text, News, SendDynamicRecord, User, PhonePaste, PhonePasteRecoder, PhonePasteTransfer, PhonePasteRechargeRecord, StaffSignRecord
-from forms import ContactForm, RegistForm
+from .models import Text, News, SendDynamicRecord, User, PhonePaste, PhonePasteRecoder, PhonePasteTransfer, PhonePasteRechargeRecord, StaffSignRecord
+from .forms import ContactForm, RegistForm
 from datetime import date
 from tools import send_dynamic_sms, check_regist, get_or_create_user_phone_paste,get_week_day
 

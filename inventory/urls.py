@@ -1,18 +1,14 @@
-from django.conf.urls import patterns, include, url
-
+# from django.conf.urls import patterns, include, url
+# from django.contrib import admin
+# admin.autodiscover()
 from django.contrib import admin
-
-admin.autodiscover()
-
-urlpatterns = patterns('',
-                       # Examples:
-                       # url(r'^$', 'inventory.views.home', name='home'),
-                       # url(r'^blog/', include('blog.urls')),
-
-                       url(r'^admin/', include(admin.site.urls)),
-                       url(r'^$', 'kucun.views.all_phone'),
-                       url(r'kucun/', include('kucun.urls')),
-                       url(r'sell/', include('sell.urls')),
-                       url(r'weixin/', include('weixin.urls')),
-                       url(r'meizu/', include('meizu.urls')),
-)
+from django.urls import path, include
+from kucun.views import all_phone
+urlpatterns = [
+    path('^admin/',  admin.site.urls),
+    path('', all_phone),
+    path('kucun/', include('kucun.urls')),
+    path('sell/', include('sell.urls')),
+    path('weixin/', include('weixin.urls')),
+    path('meizu/', include('meizu.urls')),
+]

@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+# from django.conf.urls import patterns, url
+from django.urls import path, include, re_path
+from weixin import views as weixin_views
 
 __author__ = 'JiaPan'
 
-urlpatterns = patterns('',
-                       url(r'^$', 'weixin.views.handleRequest'),
-                       url(r'^contact/$', 'weixin.views.contact'),
-                       url(r'^send_dynamic/(?P<openid>.*?)/(?P<phone>\d+)/$', 'weixin.views.send_dynamic'),
-                       url(r'^register/success/$', 'weixin.views.register_success', name='register_success'),
-                       url(r'^register/already/$', 'weixin.views.register_already', name='register_already'),
-                       url(r'^register/(?P<openid>.*?)/$', 'weixin.views.register'),
-)
+urlpatterns = [
+    re_path(r'^$', weixin_views.handleRequest),
+    re_path(r'^contact/$', weixin_views.contact),
+    re_path(r'^send_dynamic/(?P<openid>.*?)/(?P<phone>\d+)/$',
+            weixin_views.send_dynamic),
+    re_path(r'^register/success/$', weixin_views.register_success,
+            name='register_success'),
+    re_path(r'^register/already/$', weixin_views.register_already,
+            name='register_already'),
+    re_path(r'^register/(?P<openid>.*?)/$', weixin_views.register),
+]

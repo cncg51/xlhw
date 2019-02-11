@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from models import News, Commander, Text
+from .models import News, Commander, Text
 
 __author__ = 'JiaPan'
 from django.contrib import admin

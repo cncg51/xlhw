@@ -6,7 +6,7 @@ from django.db import models
 class Commander(models.Model):
     commander = models.CharField(u'回复指令', max_length=10)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.commander
 
     class Meta:
@@ -18,12 +18,13 @@ class News(models.Model):
     description = models.CharField(u'描述', max_length=100)
     picurl = models.URLField(u'图片地址')
     contenturl = models.URLField(u'内容地址')
-    commander = models.ForeignKey(Commander, verbose_name=u'回复指令')
+    commander = models.ForeignKey(
+        Commander, on_delete=models.CASCADE, verbose_name=u'回复指令')
     priority = models.IntegerField(u'优先级')
 
     is_valid = models.BooleanField(u'有效', default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -32,11 +33,12 @@ class News(models.Model):
 
 class Text(models.Model):
     content = models.TextField(u'回复内容', max_length=100)
-    commander = models.ForeignKey(Commander, verbose_name=u'回复指令')
+    commander = models.ForeignKey(
+        Commander, on_delete=models.CASCADE, verbose_name=u'回复指令')
 
     is_valid = models.BooleanField(u'有效', default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.content
 
     class Meta:
@@ -48,7 +50,7 @@ class User(models.Model):
     phonenumber = models.CharField(u'手机号', max_length=12)
     reg_date = models.DateTimeField(u'注册时间', auto_now_add=True, )
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return self.phonenumber
 
     # def get_absolute_url(self):
@@ -64,33 +66,37 @@ class SendDynamicRecord(models.Model):
     send_date = models.DateTimeField(auto_now_add=True)
     is_valid = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.password
 
 class PhonePaste(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,)
     remain = models.IntegerField()
 
 class PhonePasteRecoder(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,)
     amount = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
 
 class PhonePasteTransfer(models.Model):
-    from_user = models.ForeignKey(User, related_name='from_user')
-    to_user = models.ForeignKey(User, related_name='to_user')
+    from_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='from_user')
+    to_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='to_user')
     amount = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
 class PhonePasteRechargeRecord(models.Model):
-    user = models.ForeignKey(User, related_name='user')
-    updater = models.ForeignKey(User, related_name='updater')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user')
+    updater = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='updater')
     amount = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
 class StaffSignRecord(models.Model):
-    staff = models.ForeignKey(User)
+    staff = models.ForeignKey(User, on_delete=models.CASCADE,)
     continue_sign = models.IntegerField(u'连续签到', default=1)
     date = models.DateTimeField(auto_now=True)
     is_late = models.BooleanField(default=False)

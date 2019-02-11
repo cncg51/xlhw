@@ -12,59 +12,61 @@ class Goods(models.Model):
     )
     name = models.CharField(max_length=15)
     price = models.FloatField()
-    goods_type = models.IntegerField(choices=GOODSTYPE_IN_CHOICES)  # 1手机 2配件 3其它
+    goods_type = models.IntegerField(
+        choices=GOODSTYPE_IN_CHOICES)  # 1手机 2配件 3其它
     unsalable = models.BooleanField(default=False)
-    add_people = models.ForeignKey(User)
+    add_people = models.ForeignKey(User, on_delete=models.CASCADE,)
     update_date = models.DateField(auto_now_add=True)
     recent_sell = models.DateField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return self.name
 
 
 class Shop(models.Model):
     name = models.CharField(max_length=10)
-    principal = models.ForeignKey(User)  # 负责人
+    principal = models.ForeignKey(User, on_delete=models.CASCADE,)  # 负责人
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return self.name
 
 
 class GoodsShop(models.Model):
-    goods = models.ForeignKey(Goods)
-    shop = models.ForeignKey(Shop)
+    goods = models.ForeignKey(Goods, on_delete=models.CASCADE,)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,)
     remain = models.IntegerField()  # 剩余
-    last_updater = models.ForeignKey(User)
+    last_updater = models.ForeignKey(User, on_delete=models.CASCADE,)
     last_update_date = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return u"%s--%s" % (self.shop, self.goods)
 
 
 class SellRecord(models.Model):
-    shop = models.ForeignKey(Shop)
-    goods = models.ForeignKey(Goods)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,)
+    goods = models.ForeignKey(Goods, on_delete=models.CASCADE,)
     amount = models.IntegerField()
     is_delete = models.BooleanField(default=False)
-    updater = models.ForeignKey(User)
+    updater = models.ForeignKey(User, on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return u"%s--%s--%s" % (self.shop, self.goods, self.amount)
 
 
 class GoodsRecord(models.Model):
-    goods = models.ForeignKey(Goods)
-    shop = models.ForeignKey(Shop)
+    goods = models.ForeignKey(Goods, on_delete=models.CASCADE,)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,)
     change_num = models.IntegerField()
     remark = models.TextField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)
-    sell_record = models.ForeignKey(SellRecord, blank=True, null=True)
-    updater = models.ForeignKey(User)
+    sell_record = models.ForeignKey(
+        SellRecord, on_delete=models.CASCADE, blank=True, null=True)
+    updater = models.ForeignKey(User, on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return u"%s--%s" % (self.shop, self.goods)
 
 
@@ -73,37 +75,39 @@ class ReturnRecord(models.Model):
         (0, '操作失误'),
         (1, '退货'),
     )
-    shop = models.ForeignKey(Shop)
-    goods = models.ForeignKey(Goods)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,)
+    goods = models.ForeignKey(Goods, on_delete=models.CASCADE,)
     amount = models.IntegerField()
     type = models.IntegerField(choices=TYPE_IN_CHOICES)
-    updater = models.ForeignKey(User)
+    updater = models.ForeignKey(User, on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return u"%s--%s--%s" % (self.shop, self.goods, self.amount)
 
 
 class TransferGoods(models.Model):
-    from_shop = models.ForeignKey(Shop, related_name='from_shop')
-    to_shop = models.ForeignKey(Shop, related_name='to_name')
-    goods = models.ForeignKey(Goods)
+    from_shop = models.ForeignKey(
+        Shop, on_delete=models.CASCADE, related_name='from_shop')
+    to_shop = models.ForeignKey(
+        Shop, on_delete=models.CASCADE, related_name='to_name')
+    goods = models.ForeignKey(Goods, on_delete=models.CASCADE,)
     change_num = models.IntegerField()
-    updater = models.ForeignKey(User)
+    updater = models.ForeignKey(User, on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return u"%s--%s--%s--%s" % (self.from_shop, self.to_shop, self.goods, self.change_num)
 
 
 class ChangePrice(models.Model):
-    goods = models.ForeignKey(Goods)
+    goods = models.ForeignKey(Goods, on_delete=models.CASCADE,)
     old_price = models.FloatField()
     new_price = models.FloatField()
-    updater = models.ForeignKey(User)
+    updater = models.ForeignKey(User, on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):  # Python 3: def __str__(self):
+    def __str__(self):  # Python 3: def __str__(self):
         return self.goods.name
 
 
@@ -121,9 +125,11 @@ class Backup(models.Model):
     is_lastet = models.BooleanField(default=True)
     save_datetime = models.DateTimeField(auto_now_add=True)
 
+
 class ShopPhoneColor(models.Model):
-    goodsshop = models.ForeignKey(GoodsShop)
+    goodsshop = models.ForeignKey(GoodsShop, on_delete=models.CASCADE,)
     color = models.CharField(max_length=50)
     date = models.DateTimeField(auto_now=True)
-    def __unicode__(self):
+
+    def __str__(self):
         return self.color
