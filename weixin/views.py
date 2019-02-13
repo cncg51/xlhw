@@ -13,7 +13,7 @@ from wechat_sdk.messages import (
 from .models import Text, News, SendDynamicRecord, User, PhonePaste, PhonePasteRecoder, PhonePasteTransfer, PhonePasteRechargeRecord, StaffSignRecord
 from .forms import ContactForm, RegistForm
 from datetime import date
-from tools import send_dynamic_sms, check_regist, get_or_create_user_phone_paste,get_week_day
+from .tools import send_dynamic_sms, check_regist, get_or_create_user_phone_paste,get_week_day
 
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
@@ -136,7 +136,7 @@ def contact(request):
     else:
         form = ContactForm()  # An unbound form
 
-    return render(request, 'contact.html', {
+    return render(request, 'weixin/contact.html', {
         'form': form,
     })
 

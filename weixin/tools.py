@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import urllib2
+import urllib
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 from random import choice
-from models import User, PhonePaste, PhonePasteTransfer, PhonePasteRecoder, StaffSignRecord
+from .models import User, PhonePaste, PhonePasteTransfer, PhonePasteRecoder, StaffSignRecord
 import string
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -23,11 +23,11 @@ def send_dynamic_sms(number):
     # content = '您的随机密码为%s。【邯郸微信平台】' % random_num
     # url = "http://www.smsbao.com/sms?u=jiapan&p=e10adc3949ba59abbe56e057f20f883e&m=%s&c=%s"
 
-    req = urllib2.Request(url % (number, content))
+    req = urllib.Request(url % (number, content))
     # print req
     # print content
 
-    res_data = urllib2.urlopen(req)
+    res_data = urllib.urlopen(req)
     res = res_data.read()
     return res, random_num
 
@@ -69,4 +69,4 @@ def get_week_day(weekday):
 
 
 if __name__ == '__main__':
-    print send_dynamic_sms('13313316369')
+    print(send_dynamic_sms('13313316369'))

@@ -6,6 +6,8 @@ from weixin import views as weixin_views
 
 __author__ = 'JiaPan'
 
+app_name = 'weixin'
+
 urlpatterns = [
     re_path(r'^$', weixin_views.handleRequest),
     re_path(r'^contact/$', weixin_views.contact),
